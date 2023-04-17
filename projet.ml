@@ -100,4 +100,4 @@ let mediane (l:'a list)=
 mediane [Passable;Bien;Tresbien]
 ;;
 
-let meilleur_mediane(u: urne_jm):mention =
+(*let meilleur_mediane(u: urne_jm):mention =*)
