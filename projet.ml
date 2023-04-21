@@ -100,4 +100,19 @@ let mediane (l:'a list)=
 mediane [Passable;Bien;Tresbien]
 ;;
 
-(*let meilleur_mediane(u: urne_jm):mention =*)
+let meilleur_mediane u = 
+  List.fold_left(fun acc x -> let m = mediane x in if acc < m then m else acc) Arejeter u ;;
+let rec supprime_mention u (x:mention)=
+  match u with
+  |[] -> []
+  |t::h when t = x -> h
+  |t::h -> t::(supprime_mention h x);;
+
+supprime_mention b Assezbien;;
+let x = [[Assezbien; Tresbien; Tresbien];[Passable; Tresbien; Tresbien]]
+let supprime_meilleur_mediane (u)=
+  let m = meilleur_mediane u in 
+  List.map (fun (l:bulletin_jm) -> match l with |[]->[] |_->supprime_mention l m );;
+(*fonctionne pas *)
+supprime_mention [] Passable;;supprime_meilleur_mediane x;;
+
