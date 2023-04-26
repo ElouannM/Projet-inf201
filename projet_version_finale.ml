@@ -111,13 +111,13 @@ let bulletin : bulletin_jm = [Tresbien; Assezbien; Arejeter; Passable]
 let urne : urne_jm =
   [[Tresbien; Assezbien; Arejeter; Passable]; (* Premier bulletin *) 
    [Assezbien; Assezbien; Arejeter; Tresbien]; (* Second bulletin *) 
-   [Tresbien; Arejeter; Arejeter; Tresbien]];; (*Troisieme bulletin*)
+   [Tresbien; Arejeter; Arejeter; Tresbien]];; (* Troisieme bulletin *)
 
 let urne_triee : urne_jm =
 [[Tresbien; Assezbien; Tresbien]; (* Mentions du premier candidat *) 
  [Assezbien; Assezbien; Arejeter]; (* Mentions du second candidat *) 
- [Arejeter; Arejeter; Arejeter]; (* Mentions du troisiemecandidat*) 
- [Passable; Tresbien; Tresbien]] (* Mentions du quatrieme candidat*)
+ [Arejeter; Arejeter; Arejeter]; (* Mentions du troisiemecandidat *) 
+ [Passable; Tresbien; Tresbien]] (* Mentions du quatrieme candidat *)
 
 (*Question 12*)
 let rec depouille_jm(b : urne_jm) : urne_jm =
