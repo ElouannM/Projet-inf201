@@ -54,7 +54,7 @@ let rec union (r1: resultat) (r2: resultat) : resultat =
   |(a, b)::xs->(union xs (ajouterVoix a b r2));;
 
 let _ = assert(union r r1 = [("Eric", 7); ("Kyle", 4); ("Stan", 5); ("Jean", 5); ("Bob", 2); ("Nico", 9)]);;                                                 (*- : resultat = [("Eric", 7); ("Kyle", 4); ("Stan", 5); ("Jean", 5); ("Bob", 2); ("Nico", 9)]*)
-
+let _ = assert(union [("Eric", 7); ("Kyle", 4); ("Stan", 5)] [("Eric", 5); ("Kyle", 2); ("Stan", 2)] = [("Eric", 12); ("Kyle", 6); ("Stan", 7)]);;
 (*Question 5*)
 let max_depouille (l : resultat) : candidat*score =      (*renvoie ("", 0) si l est vide*)
   let rec aux (l:resultat) ((meilleur_c, meilleur_s): candidat*score) : candidat*score =
