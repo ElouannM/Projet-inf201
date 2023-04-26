@@ -43,10 +43,15 @@ let r = depouiller lc1 u1;;
 let r1: resultat = [("Jean",5);("Bob",2);("Nico",9)];;
 let r2: resultat = [("Jean",5);("Bob",2);("Nico",9); ("Gigi",9)];;
 
-let rec union (r1:resultat)(r2:resultat) : resultat =
-  match r1 with
-  | [] -> r2
-  | x::r'1 -> x::(union r'1 r2);;
+let rec union (r1: resultat) (r2: resultat) : resultat =
+  let rec ajouterVoix (c : candidat) (nbVoix : int) (r : resultat) : resultat =
+    match r with
+    |[]->[(c, nbVoix)]
+    |(a, b)::xs->if a = c then (a, b+nbVoix)::xs else (a, b)::(ajouterVoix c nbVoix xs)
+  in 
+  match r1 with 
+  |[]->r2
+  |(a, b)::xs->(union xs (ajouterVoix a b r2));;
 
 let _ = assert(union r r1 = [("Eric", 7); ("Kyle", 4); ("Stan", 5); ("Jean", 5); ("Bob", 2); ("Nico", 9)]);;                                                 (*- : resultat = [("Eric", 7); ("Kyle", 4); ("Stan", 5); ("Jean", 5); ("Bob", 2); ("Nico", 9)]*)
 
