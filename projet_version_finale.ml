@@ -66,10 +66,8 @@ let max_depouille (l : resultat) : candidat*score =      (*renvoie ("", 0) si l 
 let _ = assert(max_depouille r1 = [("Nico", 9)]);;
 
 (*Question 6*)
-let vainqueur_scrutin_uninominal (u:urne) (p:panel) : candidat =
-    let r = depouiller p u in (* On dépouille l'urne pour récupérer les voix*)
-      let (a,b)::r = max_depouiller r in (* On récupère le max *)
-        a;; (*On renvoie le nom *)
+let vainqueur_scrutin_uninominal (u:urne) (lc:panel) : candidat =
+  let (a, b) = max_depouille(depouiller u lc) in a;;
 
 let _ = assert(vainqueur_scrutin_uninominal u1 lc1 = "Eric");;
 
@@ -82,12 +80,11 @@ let rec suppr_elem (l : 'a list) (e : 'a) : 'a list =
 
 let _ = assert(suppr_elem r1 ("Bob",2) = [("Jean", 5); ("Nico", 9)]);;
 
-let rec deux_premiers (u:urne) (p:panel) : resultat*resultat =
-    let res = depouiller p u in (* On récupère les résultats dépoulliage *) 
-      let premier = max_depouiller res in (* On enregistre le premier en voix *)
-        let res' = suppr_e res premier in (* On récupère la liste sans le premier *)
-          let deuxieme = max_depouiller res' in (* On récupère le second en voix *)
-            premier, deuxieme (* On renvoie les 2 resultats *) ;;
+let deux_premiers (u:urne) (lc: panel) : (candidat*score)*(candidat*score) = 
+  let res = depouiller u lc in 
+  let c1 = max_depouille res in 
+  let c2 = max_depouille (suppr_elem res c1) in 
+  (c1, c2);;
 
 let _ = assert(deux_premiers u1 lc1 = ([("Eric", 7)], [("Stan", 5)]));;
 
@@ -125,15 +122,14 @@ let urne_triee : urne_jm =
  [Passable; Tresbien; Tresbien]] (* Mentions du quatrieme candidat *)
 
 (*Question 12*)
-let rec depouille_jm(b : urne_jm) : urne_jm =
-  match b with
-  |[] -> []
-  |[]::_ -> [] (* Liste actuelle vide : problème dans le bulletin *)
-  |_ -> let premiers = List.map List.hd b in (*On récupère les premiers éléments*) 
-          let derniers = List.map List.tl b in (*On récupère la suite*)
-            premiers :: depouille_jm derniers;; (*On les ajoute*)
+let rec depouiller_jm (u : urne_jm) : mention list list =
+  match u with
+  |[]->[]
+  |x::xs->let (premiers, suite) = (List.fold_left 
+   (fun ((acc, newtail):(mention list)*(mention list list)) (x: mention list) -> match x with |[]->([], newtail) |y::ys->(y::acc, ys::newtail)) ([], []) u) 
+  in premiers::(depouiller_jm suite);;
   
-let _ = assert(depouille_jm urne = urne_triee);;
+let _ = assert(depouiller_jm urne = urne_triee);;
 
 (*Question 13*)
 let urne_ordre : urne_jm =
@@ -141,32 +137,31 @@ let urne_ordre : urne_jm =
  [Arejeter; Assezbien; Assezbien];
  [Arejeter; Arejeter; Arejeter];
  [Passable; Tresbien; Tresbien]];;
+ 
+let tri (l:'a list):'a list = List.sort compare l;;
 
-let tri_mentions(u : urne_jm) : urne_jm =
-  List.map (fun l -> List.sort compare l) u;; (* Applique la fonction sort à chaque liste de mentions *)
+let rec tris_mentions (u: urne_jm) : mention list list =
+  suppr_elem (List.map tri u) [];; (*obligé de supprimer un [] qui apparait systématiquement*)
 
 let _ = assert(tri_mentions urne_triee = urne_ordre);;
 
 (*Question 14 *)
-let mediane (l:'a list) : mention =
-  match l with
-  | [] -> Arejeter (*La liste est vide : on renvoie la pire mention pour ne pas perturber le calcul de la meilleure mediane*)
-  | _ -> let n = List.length l in List.nth l (n/2);; (* Renvoie le taille/2ième élément de la liste*)
+let mediane (l:'a list) : 'a =
+  let n = List.length l in
+  List.nth l (n/2);; (*pas de problèmes pour les listes vides les fonctions qui utilisent medianes ne l'appliquent jamais sur les listes vides.*)
 
 let _ = assert((mediane [Tresbien; Bien; Assezbien; Arejeter; Passable]) = Assezbien);;
 
 (*Question 15*)                            
-let meilleure_mediane(u: urne_jm) : mention =
-  List.fold_left (fun (acc : mention) (x:bulletin_jm) -> let m = (mediane x) in if acc < m then m else acc) Arejeter u;; 
+let meilleure_mediane (u:urne_jm) : mention =
+  List.fold_left (fun (acc : mention) (x: bulletin_jm) : mention ->if x != [] then (let m = (mediane x) in if acc<m then m else acc) else acc) Arejeter u;; (*tests pour les listes vides important !!*)
 
 let _ = assert(meilleure_mediane urne_ordre = Tresbien);;
 
 (*Question 16*)
-let supprime_perdants (u : urne_jm) : urne_jm =
+let supprime_perdants (u: urne_jm) : urne_jm = 
   let m = meilleure_mediane u in
-  List.map (fun x : bulletin_jm -> 
-    if mediane x < m (*Le bulletin actuel est inférieur à la médianne*)
-      then [] (*On le supprime *) else x (*On le garde*)) u;;
+  List.map (fun (x: bulletin_jm) : bulletin_jm -> if x != [] then (let m' = mediane x in if m'<m then [] else x) else []) u;; (* pareil test pour le cas des listes vides important *) 
 
 let _ = assert (supprime_perdants urne_ordre = [[Assezbien; Tresbien; Tresbien]; []; []; [Passable; Tresbien; Tresbien]]);;
 let urne_supprime = supprime_perdants urne_ordre;;
@@ -193,7 +188,7 @@ let vainqueur_jm (u:urne_jm) (lc: candidat list) : candidat=
                   if mx > m then (mx, 1, indiceExplo, (indiceExplo+1))  (*Le candidat est gagnant parce que sa médianne est supérieure *)
                   else (m, comptePotentielsGagnants, numeroCandidatVainqueur, (indiceExplo+1))) (* Sa médiane est inférieure, on continue d'avancer *)
                   (Arejeter, 0, -1, 0) u (*Seed du fold_left et application sur l'urne *)
-    in if c = 1 (* Si il y a un unique vainqueur, c'est le n-ième élément du pannel, sinon cas pratique on ne renvoie rien *)
+    in if c = 1 (* Si c=1 on a un gagnant bien déterminé, impossible sinon (cas d'égalité, 0 gagnants, etc...)  *)
       then (List.nth lc n) else "";;
 
 (*Question 19*)
