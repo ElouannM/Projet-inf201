@@ -207,7 +207,6 @@ let trouve_vainqueurs_jm (u: urne_jm) (lc: candidat list) : candidat =
 (*A FAIRE*)
   
 (* Partie 4 : Recomptons les voix*)
-
 (*Question 21*)
 type ville = string;;
 type zone = Reg of string | Dpt of string;;
