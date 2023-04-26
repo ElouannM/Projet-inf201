@@ -8,7 +8,6 @@
 -----------------------------------------------------------------------
 *)
 
-(*Code                                                                                                        Sorties*)
 (* Partie 2 : Scrutin Uninominal *)
 (*Question 1*)
 type candidat = string;;
@@ -231,8 +230,7 @@ let trouve_bv (a:arbre) (v: ville) : resultat =
 let res2022GrenobleFontaineValence = max_depouille(union (union (trouve_bv ara "Valence") (trouve_bv ara "Fontaine")) (trouve_bv ara "Grenoble"));;
 
 (*Partie 5 : Conclusion*)
-
-
+(* A FAIRE*)
 
 
 
