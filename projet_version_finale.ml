@@ -45,13 +45,14 @@ let r2: resultat = [("Jean",5);("Bob",2);("Nico",9); ("Gigi",9)];;
 
 let rec union (r1: resultat) (r2: resultat) : resultat =
   let rec ajouterVoix (c : candidat) (nbVoix : int) (r : resultat) : resultat =
+    (* Fonction intermédiaire qui ajoute le nombre de voix d'un candidat à un résultat *)
     match r with
-    |[]->[(c, nbVoix)]
-    |(a, b)::xs->if a = c then (a, b+nbVoix)::xs else (a, b)::(ajouterVoix c nbVoix xs)
-  in 
-  match r1 with 
-  |[]->r2
-  |(a, b)::xs->(union xs (ajouterVoix a b r2));;
+    |[]->[(c, nbVoix)] 
+    |(a, b)::xs -> if a = c then (a, b+nbVoix)::xs (* Si le candidat est déjà dans le résultat, on ajoute le nombre de voix *)
+      else (a, b)::(ajouterVoix c nbVoix xs) (* Sinon on ajoute la valeur continue de parcourir le résultat *)
+  in match r1 with 
+  |[]->r2 
+  |(a, b)::xs->(union xs (ajouterVoix a b r2));; (* On ajoute le candidat et son nombre de voix au résultat *)
 
 let _ = assert(union r r1 = [("Eric", 7); ("Kyle", 4); ("Stan", 5); ("Jean", 5); ("Bob", 2); ("Nico", 9)]);;                                                 (*- : resultat = [("Eric", 7); ("Kyle", 4); ("Stan", 5); ("Jean", 5); ("Bob", 2); ("Nico", 9)]*)
 let _ = assert(union [("Eric", 7); ("Kyle", 4); ("Stan", 5)] [("Eric", 5); ("Kyle", 2); ("Stan", 2)] = [("Eric", 12); ("Kyle", 6); ("Stan", 7)]);;
@@ -67,7 +68,7 @@ let _ = assert(max_depouille r1 = [("Nico", 9)]);;
 
 (*Question 6*)
 let vainqueur_scrutin_uninominal (u:urne) (lc:panel) : candidat =
-  let (a, b) = max_depouille(depouiller u lc) in a;;
+  let (a, b) = max_depouille(depouiller u lc) in a;; (* On récupère le candidat ayant le plus de voix dans le résultat du dépouillement *)
 
 let _ = assert(vainqueur_scrutin_uninominal u1 lc1 = "Eric");;
 
@@ -97,7 +98,7 @@ let _ = assert(deux_premiers u1 lc1 = ([("Eric", 7)], [("Stan", 5)]));;
 (* Partie 3 : Jugement majoritaire *)
 (*Question 10*)
 (*
-on a 6^12 + 1 = 2 176 782 337 possibilité, 
+on a 6^12 + 1 = 2 176 782 337 possibilité, 
 ce qui est énormément plus que 13 pour le scrutin uninomimal.
 Ainsi les votants peuvent exprimer très précisément leurs ressentis 
 sur les candidats ce qui limite le paradoxe vu précédemment 
@@ -230,6 +231,3 @@ let res2022GrenobleFontaineValence = max_depouille(union (union (trouve_bv ara "
 
 (*Partie 5 : Conclusion*)
 (* A FAIRE*)
-
-
-
