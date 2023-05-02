@@ -218,7 +218,6 @@ let vainqueur_jm (u:urne_jm) (lc: candidat list) : candidat=
 
 (*Question 19*)
 (*Pannels*)
-
 (*4 candidats*)
 let lc2:panel = ["Eric";"Kyle";"Stan";"Keny"];;
 
