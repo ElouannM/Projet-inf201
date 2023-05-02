@@ -154,7 +154,6 @@ let rec depouiller_jm (u : urne_jm) : mention list list =
     ([], []) u) (* On commence avec deux listes vides pour acc et newtail *)
     in premiers::(depouiller_jm suite);; (* On appelle récursivement la fonction sur la suite des listes, et on ajoute la liste des premiers au résultat *)
 
-  
 let _ = assert(depouiller_jm urne = urne_triee);;
 
 (*Question 13*)
