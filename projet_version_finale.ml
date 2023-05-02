@@ -95,18 +95,18 @@ let u2 = ["Keny";"Kyle";"Keny";"Kyle";"Kyle";"Keny";"Eric";"Eric";"Kyle";"Eric";
 let score2 = deux_premiers u2 lc2;;
 
 (*
-Le problème d'un scrutin à deux tours est donc que l'ajout d'un candidat peut faire perdre un candidat qui avait plus de voix que lui,
-parce que les voix sont plus réparties parmis les candidats. Si on avait 100 candidats et 100 votants, le candidat
+Le problème d'un scrutin à deux tours est donc que l'ajout d'un candidat peut faire perdre un candidat qui avait plus de voix que lui
+car les voix sont plus réparties parmi les candidats. Si on avait 100 candidats et 100 votants, le candidat
 qui a 50 voix peut perdre contre un candidat qui a 51 voix car il y a 49 candidats qui ont 1 voix, et ces voix auraient pu 
-etre mises ailleurs s'il n'y avais eu que les 2 plus gros candidats lors de l'élection.
+etre mises ailleurs s'il n'y avait eu que les 2 plus gros candidats lors de l'élection.
   
-Par exemple, lors de l'élection présidentielle de 2022, si Fabien Roussel et Yannick Jadot ne se seraient pas présentés,
-Jean Luc Mélenchon aurais pu etre élu au second tour, car son programme aurais pu correspondre aux valeurs de gauche de ces deux candidats.
+Par exemple, lors de l'élection présidentielle de 2022, si Fabien Roussel et Yannick Jadot ne s'étaient pas présentés,
+Jean Luc Mélenchon aurait pu etre élu au second tour, car son programme aurait pu correspondre aux valeurs de gauche de ces deux candidats.
 De meme dans l'introduction du sujet, c'est souvent la présentation de trop de candidats partageant des valeurs communnes qui fait perdre
-les candidats adhérant à ces valeurs, et ce peut importe le bord politique.*)
+les candidats adhérents à ces valeurs, et ce peu importe le bord politique.*)
 
 (* Question 9 
-Le problème du scrutin uninomial est donc qu'il manque énormément de nuance et de précision.
+Le problème du scrutin uninomial est donc qu'il manque énormément de nuances et de précision.
 En effet, certaines personnes peuvent avoir des avis très différents sur les candidats, mais ne pas pouvoir bien l'exprimer, se contentant
 de choisir celui qu'ils préferent parmis toute la liste, sans prendre en compte le fait qu'ils pourraient préférer certains candidats
 à d'autres, mais moins que le candidat qu'ils ont choisi. 
@@ -433,7 +433,7 @@ let score3 = trouve_vainqueurs_jm ujm3 lc3;;
 (*Question 20
 En résumé, un vote majoritaire permet aux électeurs d'apporter plus de nuances à leurs votes, ce qui permet de mieux refléter leurs préférences.
 Plutôt que de voter stratégiquement pour éviter de « gaspiller » des votes sur des candidats qui ont peu de chance de gagner.
-Cela permet aux électeurs d'exprimer pleinement leurs préférences plutôt que d'être contraints par des stratégies.
+Cela permet aux électeurs d'exprimer pleinement leur choix plutôt que d'être contraints par des stratégies.
 
 Cependant, une critique possible du vote à la majorité est qu'il est difficile à mettre en œuvre dans la pratique.
 Par exemple, le processus de notation est complexe et difficile à comprendre pour certains électeurs, ce qui peut entraîner des erreurs et une confusion dans les résultats.
