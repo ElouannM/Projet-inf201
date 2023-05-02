@@ -144,10 +144,16 @@ let urne_triee : urne_jm =
 (*Question 12*)
 let rec depouiller_jm (u : urne_jm) : mention list list =
   match u with
-  |[]->[]
-  |x::xs->let (premiers, suite) = (List.fold_left 
-   (fun ((acc, newtail):(mention list)*(mention list list)) (x: mention list) -> match x with |[]->([], newtail) |y::ys->(y::acc, ys::newtail)) ([], []) u) 
-  in premiers::(depouiller_jm suite);;
+  |[]->[] (* Si l'urne est vide, on renvoie une liste vide *)
+  |x::xs-> 
+    let (premiers, suite) = (List.fold_left 
+    (fun ((acc, newtail):(mention list)*(mention list list)) (x: mention list) -> 
+        match x with 
+        |[]->([], newtail) (* Si la liste de mentions est vide, on l'ignore et on ajoute la queue de la liste à newtail *)
+        |y::ys->(y::acc, ys::newtail)) (* Sinon, on ajoute la première mention à la liste des premiers, et le reste à la queue des listes *)
+    ([], []) u) (* On commence avec deux listes vides pour acc et newtail *)
+    in premiers::(depouiller_jm suite);; (* On appelle récursivement la fonction sur la suite des listes, et on ajoute la liste des premiers au résultat *)
+
   
 let _ = assert(depouiller_jm urne = urne_triee);;
 
